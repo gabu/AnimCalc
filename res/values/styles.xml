@@ -2,4 +2,13 @@
 
     <style name="AppTheme" parent="android:Theme" />
 
+    <style name="Widget.Calc.ImageButton" parent="android:style/Widget.ImageButton">
+        <item name="android:background">@drawable/button_bg</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
+
 </resources>

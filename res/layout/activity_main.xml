@@ -10,8 +10,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
+        android:padding="4dp"
         android:text="0"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textSize="22sp" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -21,23 +22,20 @@
         <View
             android:layout_width="0dp"
             android:layout_height="fill_parent"
+            android:layout_margin="8dp"
             android:layout_weight="2" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button_clear"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onClearClick"
-            android:text="C" />
+            android:src="@drawable/button_clear" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button_divide"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onOpClick"
-            android:text="÷" />
+            android:src="@drawable/button_divide" />
     </LinearLayout>
 
     <LinearLayout
@@ -45,37 +43,32 @@
         android:layout_height="0dp"
         android:layout_weight="1" >
 
-        <Button
+        <ImageButton
             android:id="@+id/button3"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onNumberClick"
-            android:text="7" />
+            android:src="@drawable/button_7"
+            android:tag="7" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button4"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onNumberClick"
-            android:text="8" />
+            android:src="@drawable/button_8"
+            android:tag="8" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button5"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onNumberClick"
-            android:text="9" />
+            android:src="@drawable/button_9"
+            android:tag="9" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button_multiply"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onOpClick"
-            android:text="×" />
+            android:src="@drawable/button_multiply" />
     </LinearLayout>
 
     <LinearLayout
@@ -83,37 +76,32 @@
         android:layout_height="0dp"
         android:layout_weight="1" >
 
-        <Button
+        <ImageButton
             android:id="@+id/button7"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onNumberClick"
-            android:text="4" />
+            android:src="@drawable/button_4"
+            android:tag="4" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button8"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onNumberClick"
-            android:text="5" />
+            android:src="@drawable/button_5"
+            android:tag="5" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button9"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onNumberClick"
-            android:text="6" />
+            android:src="@drawable/button_6"
+            android:tag="6" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button_subtract"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onOpClick"
-            android:text="−" />
+            android:src="@drawable/button_subtract" />
     </LinearLayout>
 
     <LinearLayout
@@ -121,37 +109,32 @@
         android:layout_height="0dp"
         android:layout_weight="1" >
 
-        <Button
+        <ImageButton
             android:id="@+id/button11"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onNumberClick"
-            android:text="1" />
+            android:src="@drawable/button_1"
+            android:tag="1" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button12"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onNumberClick"
-            android:text="2" />
+            android:src="@drawable/button_2"
+            android:tag="2" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button13"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onNumberClick"
-            android:text="3" />
+            android:src="@drawable/button_3"
+            android:tag="3" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button_plus"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onOpClick"
-            android:text="＋" />
+            android:src="@drawable/button_plus" />
     </LinearLayout>
 
     <LinearLayout
@@ -162,28 +145,27 @@
         <View
             android:layout_width="0dp"
             android:layout_height="fill_parent"
+            android:layout_margin="4dp"
             android:layout_weight="1" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button15"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onNumberClick"
-            android:text="0" />
+            android:src="@drawable/button_0"
+            android:tag="0" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="fill_parent"
+            android:layout_margin="4dp"
             android:layout_weight="1" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button_equal"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            style="@style/Widget.Calc.ImageButton"
             android:onClick="onEqualClick"
-            android:text="＝" />
+            android:src="@drawable/button_equal" />
     </LinearLayout>
 
 </LinearLayout>

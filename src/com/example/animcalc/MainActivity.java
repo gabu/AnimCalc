@@ -34,10 +34,9 @@ public class MainActivity extends Activity {
     }
 
     public void onNumberClick(View view) {
-        // ボタンの文字列を取得
-        String text = ((Button) view).getText().toString();
-        // String型をint型に変換
-        int value = Integer.parseInt(text);
+        // ボタンのタグを取得してint型に変換
+        int value = Integer.parseInt(view.getTag().toString());
+
         if (mOp == R.id.button_equal) {
             // 「=」ボタンの後の場合は、そのまま代入する
             mCalcValue = new BigDecimal(value);
