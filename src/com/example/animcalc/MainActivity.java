@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -21,6 +23,15 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
+    // SoundPoolインスタンス
+    private SoundPool mSoundPool;
+
+    // 効果音の数
+    private static final int SOUND_COUNT = 10;
+
+    // サウンドIDを保持する配列
+    private int[] mSoundIds = new int[SOUND_COUNT];
+
     // UIスレッドのHandler
     private Handler mHandler = new Handler();
 
@@ -56,6 +67,31 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // SoundPoolインスタンスを生成
+        mSoundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        // 音声ファイルをロードしておく
+        mSoundIds[0] = mSoundPool.load(this, R.raw.sound_0, 1);
+        mSoundIds[1] = mSoundPool.load(this, R.raw.sound_1, 1);
+        mSoundIds[2] = mSoundPool.load(this, R.raw.sound_2, 1);
+        mSoundIds[3] = mSoundPool.load(this, R.raw.sound_3, 1);
+        mSoundIds[4] = mSoundPool.load(this, R.raw.sound_4, 1);
+        mSoundIds[5] = mSoundPool.load(this, R.raw.sound_5, 1);
+        mSoundIds[6] = mSoundPool.load(this, R.raw.sound_6, 1);
+        mSoundIds[7] = mSoundPool.load(this, R.raw.sound_7, 1);
+        mSoundIds[8] = mSoundPool.load(this, R.raw.sound_8, 1);
+        mSoundIds[9] = mSoundPool.load(this, R.raw.sound_9, 1);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // SoundPoolインスタンスを解放
+        mSoundPool.release();
+    }
+
     public void onNumberClick(View view) {
         // 大きくするアニメーション
         scaleAnimation(view);
@@ -64,6 +100,8 @@ public class MainActivity extends Activity {
 
         // ボタンのタグを取得してint型に変換
         int value = Integer.parseInt(view.getTag().toString());
+        // 効果音を再生
+        mSoundPool.play(mSoundIds[value], 1.0f, 1.0f, 0, 0, 1);
 
         if (mOp == R.id.button_equal) {
             // 「=」ボタンの後の場合は、そのまま代入する
