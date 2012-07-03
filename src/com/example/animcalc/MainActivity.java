@@ -1,28 +1,49 @@
 
 package com.example.animcalc;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
+    // 写真を選択するREQUEST_CODE
+    private static final int REQUEST_CODE_GALLERY = 1;
+
+    // カメラで撮影するREQUEST_CODE
+    private static final int REQUEST_CODE_CAMERA = 2;
+
+    // カメラで撮影した写真のUri
+    private Uri mImageUri;
+
     // SoundPoolインスタンス
     private SoundPool mSoundPool;
 
@@ -50,6 +71,9 @@ public class MainActivity extends Activity {
     // 飛ばす数字のTextViewを乗せるFrameLayout
     private FrameLayout mFrame;
 
+    // 背景用のImageView
+    private ImageView mBgImage;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +83,114 @@ public class MainActivity extends Activity {
         mResult = (TextView) findViewById(R.id.result);
         // FrameLayoutインスタンスを取得
         mFrame = (FrameLayout) findViewById(R.id.frame);
+        // 背景用のImageViewインスタンスを取得
+        mBgImage = (ImageView) findViewById(R.id.bg_image);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
+        // res/menu/activity_main.xmlを使うように指定
+        getMenuInflater().inflate(R.menu.activity_main, menu); // (1)
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                showSelectDialog();
+                break;
+        }
+        return false;
+    }
+
+    private void showSelectDialog() {
+        // 選択肢の文字列
+        String[] items = new String[] {
+                "ギャラリーから選択", "カメラで撮影"
+        };
+        // ダイアログで選択されたときに呼び出されるリスナー
+        OnClickListener listener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0: // 「ギャラリーから選択」が選ばれた場合
+                        startGallery();
+                        break;
+                    case 1: // 「カメラで撮影」が選ばれた場合
+                        startCamera();
+                        break;
+                }
+            }
+        };
+        // Builderを作って
+        Builder builder = new AlertDialog.Builder(this);
+        // 選択肢とリスナーをセットして
+        builder.setItems(items, listener);
+        // AlertDialogを作って
+        AlertDialog dialog = builder.create();
+        // ダイアログを表示!
+        dialog.show();
+    }
+
+    private void startGallery() {
+        // ギャラリーを呼び出す
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, REQUEST_CODE_GALLERY);
+    }
+
+    private void startCamera() {
+        // 写真のファイル名
+        String filename = System.currentTimeMillis() + ".jpg";
+        // 写真を保存するディレクトリ
+        File dir = new File(Environment.getExternalStorageDirectory(), "AnimCalc");
+        // 写真のファイルパス
+        File file = new File(dir, filename); // FileからUriを生成
+        mImageUri = Uri.fromFile(file);
+        // カメラを呼び出す
+        Intent intent = new Intent();
+        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+        startActivityForResult(intent, REQUEST_CODE_CAMERA);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // resultCodeがRESULT_OKではない場合は何もしない
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        // ギャラリーの呼び出しの場合
+        if (requestCode == REQUEST_CODE_GALLERY) {
+            // 背景画像をセットする
+            setBgImage(data.getData());
+        }
+
+        // カメラで撮影した場合
+        if (requestCode == REQUEST_CODE_CAMERA) {
+            Uri uri;
+            if (data == null || data.getData() == null) {
+                // dataもしくはdata.getData()がnullの場合は、
+                // IntentにセットしたUriを使う
+                uri = mImageUri;
+            } else {
+                // data.getData()がnullでない場合は、それを使う
+                uri = data.getData();
+            }
+            // 背景画像をセットする
+            setBgImage(uri);
+        }
+    }
+
+    private void setBgImage(Uri uri) {
+        // 正しく回転されたBitmapを取得
+        Bitmap bitmap = BitmapUtils.decodeUri(this, uri, 800);
+        // 背景用のImageViewにBitmapをセット
+        mBgImage.setImageBitmap(bitmap);
+        // フェードイン!
+        Animation a = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        mBgImage.startAnimation(a);
     }
 
     @Override
