@@ -1,6 +1,7 @@
 
 package com.example.animcalc;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -143,5 +144,15 @@ public class MainActivity extends FragmentActivity {
         // HistoryFragmentクラスのaddHistory()メソッドを使って
         // 履歴の文字列を伝える。
         mHistoryFragment.addHistory(history);
+    }
+
+    public void setCalcValue(BigDecimal value) {
+        // CalcFragmentクラスのsetCalcValue()メソッドを使って
+        // 値をセットする
+        mCalcFragment.setCalcValue(value);
+        // TabHostを取得して
+        TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
+        // タブを0番目にセットして電卓画面に移動する
+        tabHost.setCurrentTab(0);
     }
 }

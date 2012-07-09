@@ -280,6 +280,15 @@ public class CalcFragment extends Fragment {
         mSoundPool.release();
     }
 
+    public void setCalcValue(BigDecimal calcValue) {
+        // 計算がおかしくならないようにクリアする
+        onClearClick(null);
+        // 値をセット
+        mCalcValue = calcValue;
+        // 表示を更新
+        updateResult();
+    }
+
     public void onNumberClick(View view) {
         // 大きくするアニメーション
         scaleAnimation(view);
