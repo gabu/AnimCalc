@@ -3,6 +3,7 @@ package com.example.animcalc;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 
 import android.app.Activity;
@@ -143,6 +144,15 @@ public class CalcFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         onClearClick(v);
+                    }
+                });
+
+        // 小数点ボタンが押されたときのリスナー
+        view.findViewById(R.id.button_decimal).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onDecimalClick(v);
                     }
                 });
 
@@ -307,10 +317,16 @@ public class CalcFragment extends Fragment {
             // この条件式に該当してしまうのでクリアする
             mOp = 0;
         } else {
-            // それ以外の場合は10倍して
-            mCalcValue = mCalcValue.multiply(BigDecimal.TEN);
-            // 足す
-            mCalcValue = mCalcValue.add(new BigDecimal(value));
+            if (mOp == R.id.button_decimal || mCalcValue.scale() != 0) {
+                // 小数点を含む場合
+                BigDecimal bd = new BigDecimal(BigInteger.valueOf(value),
+                        mCalcValue.scale() + 1);
+                mCalcValue = mCalcValue.add(bd);
+            } else {
+                // それ以外の場合は10倍して
+                mCalcValue = mCalcValue.multiply(BigDecimal.TEN); // 足す
+                mCalcValue = mCalcValue.add(new BigDecimal(value));
+            }
         }
     }
 
@@ -389,6 +405,11 @@ public class CalcFragment extends Fragment {
         mPreValue = BigDecimal.ZERO;
 
         updateResult();
+    }
+
+    public void onDecimalClick(View view) {
+        // 小数点ボタンのidを入れておくだけ
+        mOp = view.getId();
     }
 
     private String stringByViewId(int id) {

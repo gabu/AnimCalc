@@ -148,11 +148,10 @@
                 android:src="@drawable/button_0"
                 android:tag="0" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_margin="4dp"
-                android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/button_decimal"
+                style="@style/Widget.Calc.ImageButton"
+                android:src="@drawable/button_decimal" />
 
             <ImageButton
                 android:id="@+id/button_equal"
