@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <Preference
+        android:key="background"
+        android:summary="背景を設定します。"
+        android:title="背景設定" />
+    <Preference
+        android:key="remove"
+        android:summary="背景の設定を解除します。"
+        android:title="背景設定解除" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="sound"
+        android:summary="効果音のON/OFFを設定します。"
+        android:title="効果音" />
+
+</PreferenceScreen>

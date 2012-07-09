@@ -1,17 +1,11 @@
 
 package com.example.animcalc;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -22,14 +16,10 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -43,15 +33,6 @@ import android.widget.TextView;
 public class CalcFragment extends Fragment {
     // 履歴の文字列
     private String mHistory = "";
-
-    // 写真を選択するREQUEST_CODE
-    private static final int REQUEST_CODE_GALLERY = 1;
-
-    // カメラで撮影するREQUEST_CODE
-    private static final int REQUEST_CODE_CAMERA = 2;
-
-    // カメラで撮影した写真のUri
-    private Uri mImageUri;
 
     // SoundPoolインスタンス
     private SoundPool mSoundPool;
@@ -160,101 +141,6 @@ public class CalcFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // res/menu/activity_main.xmlを使うように指定
-        inflater.inflate(R.menu.activity_main, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_settings:
-                showSelectDialog();
-                break;
-        }
-        return false;
-    }
-
-    private void showSelectDialog() {
-        // 選択肢の文字列
-        String[] items = new String[] {
-                "ギャラリーから選択", "カメラで撮影"
-        };
-        // ダイアログで選択されたときに呼び出されるリスナー
-        OnClickListener listener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case 0: // 「ギャラリーから選択」が選ばれた場合
-                        startGallery();
-                        break;
-                    case 1: // 「カメラで撮影」が選ばれた場合
-                        startCamera();
-                        break;
-                }
-            }
-        };
-        // Builderを作って
-        Builder builder = new AlertDialog.Builder(getActivity());
-        // 選択肢とリスナーをセットして
-        builder.setItems(items, listener);
-        // AlertDialogを作って
-        AlertDialog dialog = builder.create();
-        // ダイアログを表示!
-        dialog.show();
-    }
-
-    private void startGallery() {
-        // ギャラリーを呼び出す
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, REQUEST_CODE_GALLERY);
-    }
-
-    private void startCamera() {
-        // 写真のファイル名
-        String filename = System.currentTimeMillis() + ".jpg";
-        // 写真を保存するディレクトリ
-        File dir = new File(Environment.getExternalStorageDirectory(), "AnimCalc");
-        // 写真のファイルパス
-        File file = new File(dir, filename); // FileからUriを生成
-        mImageUri = Uri.fromFile(file);
-        // カメラを呼び出す
-        Intent intent = new Intent();
-        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
-        startActivityForResult(intent, REQUEST_CODE_CAMERA);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // resultCodeがRESULT_OKではない場合は何もしない
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        // ギャラリーの呼び出しの場合
-        if (requestCode == REQUEST_CODE_GALLERY) {
-            // 背景画像をセットする
-            setBgImage(data.getData());
-        }
-
-        // カメラで撮影した場合
-        if (requestCode == REQUEST_CODE_CAMERA) {
-            Uri uri;
-            if (data == null || data.getData() == null) {
-                // dataもしくはdata.getData()がnullの場合は、
-                // IntentにセットしたUriを使う
-                uri = mImageUri;
-            } else {
-                // data.getData()がnullでない場合は、それを使う
-                uri = data.getData();
-            }
-            // 背景画像をセットする
-            setBgImage(uri);
-        }
-    }
-
     private void setBgImage(Uri uri) {
         // 正しく回転されたBitmapを取得
         Bitmap bitmap = BitmapUtils.decodeUri(getActivity(), uri, 800);
@@ -281,6 +167,18 @@ public class CalcFragment extends Fragment {
         mSoundIds[7] = mSoundPool.load(getActivity(), R.raw.sound_7, 1);
         mSoundIds[8] = mSoundPool.load(getActivity(), R.raw.sound_8, 1);
         mSoundIds[9] = mSoundPool.load(getActivity(), R.raw.sound_9, 1);
+
+        SharedPreferences sp;
+        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        // 保存されている背景のUri文字列を取得
+        String uri = sp.getString(SettingsActivity.KEY_BACKGROUND, null);
+        if (uri != null) {
+            // nullじゃなかったら背景を設定する
+            setBgImage(Uri.parse(uri));
+        } else {
+            // 背景をクリアする
+            mBgImage.setImageDrawable(null);
+        }
     }
 
     @Override
@@ -307,8 +205,16 @@ public class CalcFragment extends Fragment {
 
         // ボタンのタグを取得してint型に変換
         int value = Integer.parseInt(view.getTag().toString());
+
+        // 効果音のON/OFFを取得
+        SharedPreferences sp;
+        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        boolean enableSound = sp.getBoolean("sound", false);
+
         // 効果音を再生
-        mSoundPool.play(mSoundIds[value], 1.0f, 1.0f, 0, 0, 1);
+        if (enableSound) {
+            mSoundPool.play(mSoundIds[value], 1.0f, 1.0f, 0, 0, 1);
+        }
 
         if (mOp == R.id.button_equal) {
             // 「=」ボタンの後の場合は、そのまま代入する

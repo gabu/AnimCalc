@@ -5,11 +5,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
@@ -42,6 +46,24 @@ public class MainActivity extends FragmentActivity {
         // TabsAdapterに追加！
         adapter.addTab("電卓", mCalcFragment);
         adapter.addTab("履歴", mHistoryFragment);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                // 設定画面に移動!
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+        }
+        return false;
     }
 
     private class TabsAdapter extends FragmentPagerAdapter
