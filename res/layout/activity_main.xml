@@ -1,185 +1,32 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-
-    <ImageView
-        android:id="@+id/bg_image"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:scaleType="fitCenter" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/result"
+        <TabWidget
+            android:id="@android:id/tabs"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:padding="4dp"
-            android:text="0"
-            android:textSize="22sp" />
+            android:layout_weight="0"
+            android:orientation="horizontal" />
 
-        <LinearLayout
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" >
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_margin="8dp"
-                android:layout_weight="2" />
-
-            <ImageButton
-                android:id="@+id/button_clear"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onClearClick"
-                android:src="@drawable/button_clear" />
-
-            <ImageButton
-                android:id="@+id/button_divide"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onOpClick"
-                android:src="@drawable/button_divide" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
-
-            <ImageButton
-                android:id="@+id/button3"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onNumberClick"
-                android:src="@drawable/button_7"
-                android:tag="7" />
-
-            <ImageButton
-                android:id="@+id/button4"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onNumberClick"
-                android:src="@drawable/button_8"
-                android:tag="8" />
-
-            <ImageButton
-                android:id="@+id/button5"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onNumberClick"
-                android:src="@drawable/button_9"
-                android:tag="9" />
-
-            <ImageButton
-                android:id="@+id/button_multiply"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onOpClick"
-                android:src="@drawable/button_multiply" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
-
-            <ImageButton
-                android:id="@+id/button7"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onNumberClick"
-                android:src="@drawable/button_4"
-                android:tag="4" />
-
-            <ImageButton
-                android:id="@+id/button8"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onNumberClick"
-                android:src="@drawable/button_5"
-                android:tag="5" />
-
-            <ImageButton
-                android:id="@+id/button9"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onNumberClick"
-                android:src="@drawable/button_6"
-                android:tag="6" />
-
-            <ImageButton
-                android:id="@+id/button_subtract"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onOpClick"
-                android:src="@drawable/button_subtract" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
-
-            <ImageButton
-                android:id="@+id/button11"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onNumberClick"
-                android:src="@drawable/button_1"
-                android:tag="1" />
-
-            <ImageButton
-                android:id="@+id/button12"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onNumberClick"
-                android:src="@drawable/button_2"
-                android:tag="2" />
-
-            <ImageButton
-                android:id="@+id/button13"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onNumberClick"
-                android:src="@drawable/button_3"
-                android:tag="3" />
-
-            <ImageButton
-                android:id="@+id/button_plus"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onOpClick"
-                android:src="@drawable/button_plus" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_margin="4dp"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/button15"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onNumberClick"
-                android:src="@drawable/button_0"
-                android:tag="0" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_margin="4dp"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/button_equal"
-                style="@style/Widget.Calc.ImageButton"
-                android:onClick="onEqualClick"
-                android:src="@drawable/button_equal" />
-        </LinearLayout>
+            android:layout_weight="1" />
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/frame"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
-
-</FrameLayout>
+</TabHost>
