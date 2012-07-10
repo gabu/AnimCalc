@@ -101,6 +101,8 @@ public class SettingsActivity extends PreferenceActivity {
         String filename = System.currentTimeMillis() + ".jpg";
         // 写真を保存するディレクトリ
         File dir = new File(Environment.getExternalStorageDirectory(), "AnimCalc");
+        // ディレクトリを作成
+        dir.mkdirs();
         // 写真のファイルパス
         File file = new File(dir, filename); // FileからUriを生成
         mImageUri = Uri.fromFile(file);
