@@ -11,12 +11,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
+import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
     // 電卓画面
@@ -110,8 +112,10 @@ public class MainActivity extends FragmentActivity {
         public void addTab(String title, Fragment fragment) {
             // TabSpecを作って
             TabSpec tabSpec = mTabHost.newTabSpec(title);
+            // Indicatorを作って
+            View i = createIndicator(title);
             // 表示タイトルをセット
-            tabSpec.setIndicator(title);
+            tabSpec.setIndicator(i);
             // コンテンツをセット（ダミー）
             tabSpec.setContent(new Dummy(mContext));
             // タブを追加
@@ -159,6 +163,16 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void onPageScrollStateChanged(int state) {
             // 今回は何もしない
+        }
+
+        private View createIndicator(String title) {
+            LayoutInflater inflater;
+            inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            // レイアウトファイルからViewを作る
+            View view = inflater.inflate(R.layout.tab_indicator, null);
+            // 表示タイトルをセット
+            ((TextView) view.findViewById(R.id.text)).setText(title);
+            return view;
         }
     }
 
