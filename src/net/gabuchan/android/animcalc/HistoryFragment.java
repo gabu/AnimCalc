@@ -1,5 +1,5 @@
 
-package com.example.animcalc;
+package net.gabuchan.android.animcalc;
 
 import java.math.BigDecimal;
 
