@@ -64,6 +64,9 @@ public class CalcFragment extends Fragment {
     // 背景用のImageView
     private ImageView mBgImage;
 
+    // 小数点入力中
+    private boolean mIsDecimal = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -223,7 +226,7 @@ public class CalcFragment extends Fragment {
             // この条件式に該当してしまうのでクリアする
             mOp = 0;
         } else {
-            if (mOp == R.id.button_decimal || mCalcValue.scale() != 0) {
+            if (mIsDecimal) {
                 // 小数点を含む場合
                 BigDecimal bd = new BigDecimal(BigInteger.valueOf(value),
                         mCalcValue.scale() + 1);
@@ -253,6 +256,8 @@ public class CalcFragment extends Fragment {
         mPreValue = mCalcValue;
         // 現在の値には0を入れておく
         mCalcValue = BigDecimal.ZERO;
+        // 小数点モード終了
+        mIsDecimal = false;
     }
 
     public void onEqualClick(View view) {
@@ -298,6 +303,8 @@ public class CalcFragment extends Fragment {
 
         // イコールのidを入れておく
         mOp = R.id.button_equal;
+        // 小数点モード終了
+        mIsDecimal = false;
         // 結果を表示
         updateResult();
     }
@@ -309,13 +316,15 @@ public class CalcFragment extends Fragment {
         mOp = 0;
         mCalcValue = BigDecimal.ZERO;
         mPreValue = BigDecimal.ZERO;
+        // 小数点モード終了
+        mIsDecimal = false;
 
         updateResult();
     }
 
     public void onDecimalClick(View view) {
-        // 小数点ボタンのidを入れておくだけ
-        mOp = view.getId();
+        // 小数点モード開始
+        mIsDecimal = true;
     }
 
     private String stringByViewId(int id) {
